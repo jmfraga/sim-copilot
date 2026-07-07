@@ -29,3 +29,13 @@
 ## Reset para re-demo
 
 Borra `data/` (la DB y reportes se regeneran solos; el esquema es idempotente).
+
+## ⚠️ Lecciones de guerra (aprendidas en vivo)
+
+- **Nunca corras `npm run build` con el dev server corriendo**: comparten `.next/` y la caché
+  de Turbopack se corrompe → página en blanco. Si pasa: mata el server, `rm -rf .next`, relanza.
+- **Para verla desde otra máquina** no basta `-H 0.0.0.0`: Next dev bloquea recursos
+  cross-origin. Pon la IP/host en `ALLOWED_DEV_ORIGINS` (`.env.local`) — ya está cableado
+  en `next.config.ts`.
+- Verifica con un navegador real (o `chrome --headless=new --dump-dom`), no solo con `curl`:
+  el curl daba 200 mientras el navegador se quedaba en blanco.
