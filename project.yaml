@@ -1,0 +1,7 @@
+name: "sim-copilot"
+slug: sim-copilot
+status: demo
+host: "M4"
+repo: "https://github.com/jmfraga/sim-copilot"
+summary: "Demo de clase: copiloto de simulación clínica construido de forma autónoma por Claude Code (~2h). No es proyecto activo."
+notes: "Curso Haz Magia con Claude, sesión 4 (2026-07-07). Spec del build en DEMO_BUILD.md."

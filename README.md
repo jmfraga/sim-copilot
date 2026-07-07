@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sim Copilot MVP
 
-## Getting Started
+Copiloto de simulación clínica en tiempo real: escucha la sesión, arma la línea de tiempo por
+fases (`prep → prebriefing → escenario → debriefing → reporte`), extrae momentos clave cruzados
+con los objetivos de aprendizaje, propone un debriefing estructurado (PEARLS / advocacy-inquiry /
+plus-delta) con tips en vivo, y genera un reporte final con retroalimentación al instructor.
 
-First, run the development server:
+**Este proyecto fue construido de forma autónoma por Claude Code en ~2 horas** durante la sesión 4
+del curso *Haz Magia con Claude* (SimAcademy). El prompt/spec completo que lo construyó está en
+[`DEMO_BUILD.md`](./DEMO_BUILD.md) — es a la vez la receta del build y un ejemplo de prompt para
+trabajo autónomo. **Forkéalo, rómpelo, mejóralo.**
+
+## Correr
 
 ```bash
+npm install
+cp .env.example .env.local   # pon tus llaves, o configúralas en /settings
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Modo REPLAY**: funciona sin micrófono ni llaves de transcripción, con un transcript de ejemplo.
+- **Modo LIVE**: requiere proveedor de transcripción (endpoint estilo `/audio/transcriptions`).
+- **IA**: momentos clave y tips usan un modelo rápido; el reporte final, uno fuerte (default Anthropic).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Advertencias (demo-grade, NO producción)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Las llaves guardadas desde la página Settings van a SQLite local **sin cifrar**.
+- No hay auth, ni multiusuario, ni manejo de PHI. Es una demo de alcances de Claude Code.
 
-## Learn More
+## Licencia
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT — ver [LICENSE](./LICENSE).
