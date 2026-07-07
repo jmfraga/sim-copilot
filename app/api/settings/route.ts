@@ -24,7 +24,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const { values } = (await request.json()) as { values: Record<string, string> };
-  const valid = new Set(CONFIG_KEYS.map((k) => k.key));
+  const valid = new Set<string>(CONFIG_KEYS.map((k) => k.key));
   let saved = 0;
   for (const [key, value] of Object.entries(values || {})) {
     if (!valid.has(key)) continue;
