@@ -32,6 +32,11 @@ export default function SessionPage({ params }: { params: Promise<{ id: string }
   const [replayIdx, setReplayIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [advancing, setAdvancing] = useState(false);
+  const [micOn, setMicOn] = useState(false);
+  const [micError, setMicError] = useState("");
+  const micOnRef = useRef(false);
+  const streamRef = useRef<MediaStream | null>(null);
+  const recorderRef = useRef<MediaRecorder | null>(null);
   const timelineEndRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(async () => {
@@ -80,6 +85,49 @@ export default function SessionPage({ params }: { params: Promise<{ id: string }
     return () => clearInterval(t);
   }, [inDebrief, id]);
 
+  // ciclo de captura: stop/restart cada 12 s para que cada blob sea un webm completo
+  // (con timeslice los chunks 2+ no llevan header y el proveedor los rechaza)
+  const recordCycle = useCallback(
+    (stream: MediaStream) => {
+      const rec = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      rec.ondataavailable = async (ev) => {
+        if (ev.data.size < 2000) return; // silencio / chunk vacío
+        const fd = new FormData();
+        fd.append("audio", new File([ev.data], "chunk.webm", { type: "audio/webm" }));
+        const res = await fetch(`/api/sessions/${id}/transcribe`, { method: "POST", body: fd });
+        if (!res.ok) setMicError((await res.json()).error || "error de transcripción");
+        load();
+      };
+      rec.start();
+      recorderRef.current = rec;
+      setTimeout(() => {
+        if (rec.state !== "inactive") rec.stop();
+        if (micOnRef.current) recordCycle(stream);
+      }, 12000);
+    },
+    [id, load]
+  );
+
+  async function toggleMic() {
+    if (micOn) {
+      micOnRef.current = false;
+      if (recorderRef.current?.state !== "inactive") recorderRef.current?.stop();
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      setMicOn(false);
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
+      micOnRef.current = true;
+      setMicError("");
+      recordCycle(stream);
+      setMicOn(true);
+    } catch {
+      setMicError("sin acceso al micrófono");
+    }
+  }
+
   if (!data) return <main className="p-8">Cargando…</main>;
   const { session, objectives, timeline, artifacts } = data;
   const phaseIdx = PHASES.indexOf(session.phase as (typeof PHASES)[number]);
@@ -105,19 +153,32 @@ export default function SessionPage({ params }: { params: Promise<{ id: string }
           <h1 className="font-heading text-3xl font-semibold">{session.case_title}</h1>
           <p className="text-sm opacity-70">Sesión #{session.id} · modo {session.mode}</p>
         </div>
-        {session.mode === "replay" && session.phase !== "reporte" && (
-          <div className="text-right">
-            <button
-              onClick={() => setPlaying((p) => !p)}
-              className={`rounded-md px-4 py-2 text-sm text-white ${playing ? "bg-cafe" : "bg-accent"}`}
-            >
-              {playing ? "⏸ Pausar replay" : "▶ Iniciar replay"}
-            </button>
+        {session.phase !== "reporte" && (
+          <div className="text-right space-y-1">
+            <div className="flex gap-2 justify-end">
+              {session.mode === "replay" && (
+                <button
+                  onClick={() => setPlaying((p) => !p)}
+                  disabled={micOn}
+                  className={`rounded-md px-4 py-2 text-sm text-white disabled:opacity-40 ${playing ? "bg-cafe" : "bg-accent"}`}
+                >
+                  {playing ? "⏸ Pausar replay" : "▶ Iniciar replay"}
+                </button>
+              )}
+              <button
+                onClick={toggleMic}
+                disabled={playing}
+                className={`rounded-md px-4 py-2 text-sm disabled:opacity-40 ${micOn ? "bg-red-700 text-white" : "border border-line hover:bg-black/5"}`}
+              >
+                {micOn ? "⏹ Detener mic" : "🎙 Mic en vivo"}
+              </button>
+            </div>
             {waitingPhase && (
-              <p className="text-xs mt-1 opacity-70">
+              <p className="text-xs opacity-70">
                 replay en espera: el siguiente fragmento es de «{PHASE_LABELS[chunks[replayIdx].phase]}»
               </p>
             )}
+            {micError && <p className="text-xs text-red-700">{micError}</p>}
           </div>
         )}
       </header>
