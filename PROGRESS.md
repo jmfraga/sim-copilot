@@ -1,17 +1,26 @@
-# PROGRESS — Sim Copilot MVP (build autónomo)
+# PROGRESS — Sim Copilot MVP (build autónomo) ✅ COMPLETO
 
-**Inicio:** 2026-07-07 16:18:43 · **Ahora:** 2026-07-07 16:32:25 · **Transcurrido: 13 min / 126**
+**Inicio:** 2026-07-07 16:18:43 · **Fin:** 2026-07-07 16:35:52 · **Duración total: 17 min** (tope: 126)
 
-## Fase actual: 3 — Mic real + Settings + pulido
+## Los 7 criterios del goal — TODOS cumplidos y demostrados
+1. ✅ Repo PÚBLICO github.com/jmfraga/sim-copilot — MIT, .env.example, .gitignore excluye .env*/\*.db//data
+2. ✅ npm run build → exit 0
+3. ✅ E2E REPLAY por las 5 fases; timeline JSON mostrado; DB: 2 casos / 3 sesiones / 87 segmentos / 4 artifacts
+4. ✅ Debriefing estructurado PEARLS + reporte con retro al instructor (data/reports/session-2-reporte.md, 9,869 bytes) — cat de ambos
+5. ✅ Settings page con 2 bloques de proveedor; precedencia store local → env demostrada (llaves enmascaradas)
+6. ✅ m4-hub lista sim-copilot con status "demo" (project.yaml + /api/fleet/map)
+7. ✅ Dev server 0.0.0.0:3000 accesible vía tailnet → HTTP 200
 
-## Criterios cumplidos
-- ✅ (1) Repo PÚBLICO completo · ✅ (2) build exit 0 · ✅ (3) E2E replay con timeline JSON + conteos DB
-- ✅ (4) Debriefing estructurado PEARLS (2,845 chars) + reporte con retro al instructor (9,609 chars) en data/reports/session-2-reporte.md — ambos mostrados con cat
-- ✅ (6) m4-hub status "demo" · ✅ (7-parcial) 0.0.0.0:3000 vía tailnet
-- ➕ Tips en vivo funcionando (ejemplo real mostrado); sesión 3 viva en debriefing como asset de demo
+## Extras logrados dentro del tiempo
+- Tips en vivo cada 25 s durante debriefing (ejemplo real en transcript)
+- Mic real: MediaRecorder con ciclo stop/restart 12 s (webm válido por chunk) → transcripción probada con audio real
+- Toggle replay/live excluyente en la sesión
+- Tokens de marca (Fraunces / IBM Plex / verde-café-papel) aplicados
+- Sesión 3 dejada VIVA en debriefing como asset para la demo en clase
+- DEMO.md con guion de 5 minutos
 
-## Siguiente paso
-Fase 3: Settings page (criterio 5), captura MediaRecorder + route de transcripción, toggle replay/live, DEMO.md, verificación final
+## Incidencias (resueltas)
+- Next 16.2.10 en vez de 15 (create-next-app actual) — sin impacto
+- 2 errores de tipos en build (types de better-sqlite3, Set<string>) — corregidos en el momento
 
-## Bloqueos
-Ninguno
+## Sin bloqueos. Sin secretos commiteados (verificado en cada commit).
