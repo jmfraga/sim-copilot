@@ -1,24 +1,17 @@
 # PROGRESS — Sim Copilot MVP (build autónomo)
 
-**Inicio:** 2026-07-07 16:18:43 · **Ahora:** 2026-07-07 16:28:22 · **Transcurrido: 9 min / 126**
+**Inicio:** 2026-07-07 16:18:43 · **Ahora:** 2026-07-07 16:32:25 · **Transcurrido: 13 min / 126**
 
-## Fase actual: 2 — La magia IA
+## Fase actual: 3 — Mic real + Settings + pulido
 
 ## Criterios cumplidos
-- ✅ (1) Repo PÚBLICO jmfraga/sim-copilot completo (MIT, .env.example, .gitignore seguro)
-- ✅ (2) npm run build → exit 0
-- ✅ (3) E2E REPLAY: prep→prebriefing→escenario→debriefing→reporte, timeline 26 segmentos (JSON mostrado), DB: 1 caso / 4 objetivos / 1 sesión / 26 segmentos
-- ✅ (6) m4-hub lista sim-copilot con status "demo" (/api/projects + /api/fleet/map)
-- ✅ (7-parcial) dev server 0.0.0.0:3000 → 200 local y tailnet (re-verificación al final)
-
-## Hecho en Fase 1
-- Esquema SQLite idempotente; máquina de estados con phase_markers; ingesta etiquetada por fase activa
-- UI: dashboard de casos + pantalla de sesión (stepper, replay player que respeta la fase, timeline en vivo)
-- Tokens de marca aplicados desde ya (Fraunces / IBM Plex / verde-café-papel)
-- e2e scripteado: scripts/e2e-replay.mjs
+- ✅ (1) Repo PÚBLICO completo · ✅ (2) build exit 0 · ✅ (3) E2E replay con timeline JSON + conteos DB
+- ✅ (4) Debriefing estructurado PEARLS (2,845 chars) + reporte con retro al instructor (9,609 chars) en data/reports/session-2-reporte.md — ambos mostrados con cat
+- ✅ (6) m4-hub status "demo" · ✅ (7-parcial) 0.0.0.0:3000 vía tailnet
+- ➕ Tips en vivo funcionando (ejemplo real mostrado); sesión 3 viva en debriefing como asset de demo
 
 ## Siguiente paso
-Fase 2: cliente Anthropic (settings→env), momentos clave (MODEL_FAST), plan debriefing PEARLS, tips en vivo, reporte final (MODEL_STRONG) + export md
+Fase 3: Settings page (criterio 5), captura MediaRecorder + route de transcripción, toggle replay/live, DEMO.md, verificación final
 
 ## Bloqueos
 Ninguno
