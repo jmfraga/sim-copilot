@@ -24,3 +24,11 @@
 - 2 errores de tipos en build (types de better-sqlite3, Set<string>) — corregidos en el momento
 
 ## Sin bloqueos. Sin secretos commiteados (verificado en cada commit).
+
+## Post-demo hotfix (16:48:56)
+- 🐛 Reporte de la clase: "no abre nada" desde otra máquina. Causa raíz doble:
+  (1) caché Turbopack corrupta por correr `npm run build` con el dev server vivo;
+  (2) bloqueo cross-origin de recursos dev de Next al servir por IP.
+- ✅ Fix: `.next` regenerado + `allowedDevOrigins` vía env (sin IPs en el repo).
+- ✅ Verificado con Chrome real (headless --dump-dom) vía la IP de tailnet: home y
+  /session/3 renderizan completos (timeline, momentos, plan PEARLS, tips, mic). Log limpio.
