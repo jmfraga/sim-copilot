@@ -70,6 +70,16 @@ export default function SessionPage({ params }: { params: Promise<{ id: string }
     timelineEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [data?.timeline.length]);
 
+  // tips en vivo: cada 25 s durante el debriefing
+  const inDebrief = data?.session.phase === "debriefing";
+  useEffect(() => {
+    if (!inDebrief) return;
+    const ask = () => fetch(`/api/sessions/${id}/tips`, { method: "POST" }).catch(() => {});
+    const t = setInterval(ask, 25000);
+    ask();
+    return () => clearInterval(t);
+  }, [inDebrief, id]);
+
   if (!data) return <main className="p-8">Cargando…</main>;
   const { session, objectives, timeline, artifacts } = data;
   const phaseIdx = PHASES.indexOf(session.phase as (typeof PHASES)[number]);
@@ -207,7 +217,12 @@ export default function SessionPage({ params }: { params: Promise<{ id: string }
 
           {report && (
             <section className="rounded-lg border border-cafe bg-panel p-4">
-              <h3 className="font-heading text-lg mb-2">📄 Reporte final</h3>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-heading text-lg">📄 Reporte final</h3>
+                <a href={`/api/sessions/${id}/report`} className="text-xs underline text-accent">
+                  ⬇ Exportar .md
+                </a>
+              </div>
               <pre className="whitespace-pre-wrap text-xs font-mono opacity-90 max-h-64 overflow-y-auto">{report.content}</pre>
             </section>
           )}
